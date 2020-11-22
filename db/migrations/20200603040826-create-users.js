@@ -6,28 +6,62 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER
       },
-      firstName: {
-        type: Sequelize.STRING(32),
+      first_name: {
+        type: Sequelize.STRING
       },
-      lastName: {
-        type: Sequelize.STRING(32),
+      last_name: {
+        type: Sequelize.STRING
       },
       username: {
-        type: Sequelize.STRING(32),
+        type: Sequelize.STRING
       },
-      email: {
-        type: Sequelize.STRING(32),
+      avatar: {
+        type: Sequelize.TEXT
       },
-      password: {
+      phone: {
         type: Sequelize.STRING,
       },
-      phoneNumber: {
-        type: Sequelize.STRING(32),
+      coin: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
       },
-      gender: {
-        type: Sequelize.STRING(1),
+      temp_coin: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+      },
+      rate: {
+        type: Sequelize.FLOAT,
+        defaultValue: 0
+      },
+      rate_count: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+      },
+      momo: {
+        type: Sequelize.STRING,
+      },
+      vcb: {
+        type: Sequelize.STRING,
+      },
+      facebookId: {
+        type: Sequelize.STRING,
+      },
+      allow_noti:{
+        type: Sequelize.BOOLEAN,
+        defaultValue: true
+      },
+      email: {
+        type: Sequelize.STRING,
+        unique: true
+      },
+      password: {
+        type: Sequelize.STRING
+      },
+      is_admin:{
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
       },
       status: {
         type: Sequelize.INTEGER(1),

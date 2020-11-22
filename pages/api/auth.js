@@ -20,7 +20,7 @@ const handler = nextConnect()
     /* Check user in database */
     const user = await models.users.findOne({
       where: { email: email },
-      attributes: ['id', 'email', 'password'],
+      // attributes: ['id', 'email', 'password'],
       limit: 1,
     });
     /* Check if exists */
@@ -44,14 +44,16 @@ const handler = nextConnect()
         /* Sign token */
         jwt.sign(
           payload,
-          KEY,
+          'secretOrKeyJWTRandom',
           {
             expiresIn: 31556926, // 1 year in seconds
           },
           (err, token) => {
+            delete dataUser.password;
             res.status(200).json({
               success: true,
               token: 'Bearer ' + token,
+              profile: dataUser
             });
           },
         );

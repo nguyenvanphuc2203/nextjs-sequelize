@@ -14,21 +14,21 @@ const handler = nextConnect()
     } = req;
 
     const users = await models.users.findAndCountAll({
-      include: [
-        {
-          model: models.posts,
-          as: 'posts',
-        },
-        {
-          model: models.jobs,
-          as: 'jobs',
-        },
-      ],
+      // include: [
+      //   {
+      //     model: models.posts,
+      //     as: 'posts',
+      //   },
+      //   {
+      //     model: models.jobs,
+      //     as: 'jobs',
+      //   },
+      // ],
       order: [
         // Will escape title and validate DESC against a list of valid direction parameters
         ['id', 'DESC'],
       ],
-      offset: nextPage ? +nextPage : 0,
+      offset: nextPage ? nextPage* 5 : 0,
       limit: 5,
     });
 
@@ -46,12 +46,14 @@ const handler = nextConnect()
     const { slug } = req.query;
     const { username, email, password } = body;
     const userId = slug;
+    console.log('body',body)
     const newUser = await models.users.create({
       username,
       email,
       password,
-      status: 1,
+      status: '1',
     });
+    console.log(newUser);
     return res.status(200).json({
       status: 'success',
       message: 'done',

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 /* utils */
-import { absoluteUrl } from '../../middleware/utils';
+import { absoluteUrl, loggedAuth } from '../../middleware/utils';
 
 /* components */
 import Layout from '../../components/layout/Layout';
@@ -223,13 +223,13 @@ function Register(props) {
     >
       <div className="container">
         <main className="content-detail">
-          <Link
+          {/* <Link
             href={{
               pathname: '/user',
             }}
           >
             <a>&larr; Back</a>
-          </Link>
+          </Link> */}
           <FormRegister
             props={{
               onSubmitHandler,
@@ -248,6 +248,7 @@ function Register(props) {
 
 /* getServerSideProps */
 export async function getServerSideProps(context) {
+  loggedAuth(context);
   const { req } = context;
   const { origin } = absoluteUrl(req);
 

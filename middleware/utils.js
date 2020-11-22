@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import Router from 'next/router';
 
 const SECRET_KEY = process.env.JWT_KEY;
 
@@ -8,7 +9,7 @@ const SECRET_KEY = process.env.JWT_KEY;
  */
 export function verifyToken(jwtToken) {
   try {
-    return jwt.verify(jwtToken, SECRET_KEY);
+    return jwt.verify(jwtToken, 'secretOrKeyJWTRandom');
   } catch (e) {
     console.log('e:', e);
     return null;
@@ -51,3 +52,28 @@ export function absoluteUrl(req, setLocalhost) {
     url: req,
   };
 }
+
+export const authMiddlewareRole = ctx => {
+  const { token } = getAppCookies(ctx.req);
+
+  if (ctx.req && !token) {
+    ctx.res.writeHead(302, { Location: "/user/login" });
+    ctx.res.end();
+    return;
+  }
+  
+  if (!token) {
+    Router.push("/user/login");
+  }
+};
+
+export const loggedAuth = ctx => {
+  const { token } = getAppCookies(ctx.req);
+
+  if (token) {
+    ctx.res.writeHead(302, { Location: "/" });
+    ctx.res.end();
+    return;
+  }
+};
+

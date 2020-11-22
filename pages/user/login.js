@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Router, { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginProfile } from '../../redux/actions/mainActions'
 
 /* utils */
-import { absoluteUrl } from '../../middleware/utils';
+import { absoluteUrl, loggedAuth } from '../../middleware/utils';
 
 /* components */
 import Layout from '../../components/layout/Layout';
@@ -48,6 +50,8 @@ function Login(props) {
   const [stateFormError, setStateFormError] = useState([]);
   const [stateFormValid, setStateFormValid] = useState(false);
   const [stateFormMessage, setStateFormMessage] = useState({});
+
+  const dispatch = useDispatch();
 
   function onChangeHandler(e) {
     const { name, value } = e.currentTarget;
@@ -94,6 +98,8 @@ function Login(props) {
       let result = await loginApi.json();
       if (result.success && result.token) {
         Cookies.set('token', result.token);
+        console.log(result);
+        dispatch(loginProfile(result.profile));
         // window.location.href = referer ? referer : "/";
         // const pathUrl = referer ? referer.lastIndexOf("/") : "/";
         Router.push('/');
@@ -210,13 +216,13 @@ function Login(props) {
     >
       <div className="container">
         <main className="content-detail">
-          <Link
+          {/* <Link
             href={{
               pathname: '/user',
             }}
           >
             <a>&larr; Back</a>
-          </Link>
+          </Link> */}
           <FormLogin
             props={{
               onSubmitHandler,
@@ -235,6 +241,7 @@ function Login(props) {
 
 /* getServerSideProps */
 export async function getServerSideProps(context) {
+  loggedAuth(context);
   const { req } = context;
   const { origin } = absoluteUrl(req);
 

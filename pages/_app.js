@@ -1,7 +1,13 @@
 import Head from 'next/head';
+import { Provider } from 'react-redux';
+import { createWrapper } from "next-redux-wrapper";
+import { PersistGate } from 'redux-persist/lib/integration/react';
+import { persistor, store } from '../redux/store';
+
 import Router from 'next/router';
-import { getAppCookies, verifyToken } from '../middleware/utils';
+import { getAppCookies, verifyToken, absoluteUrl } from '../middleware/utils';
 import NProgress from 'nprogress';
+import 'semantic-ui-css/semantic.min.css'
 
 NProgress.configure({ showSpinner: false });
 Router.events.on('routeChangeStart', url => {
@@ -12,13 +18,20 @@ Router.events.on('routeChangeError', () => NProgress.done());
 
 function MyApp({ Component, pageProps }) {
   return (
-    <>
-      <Head>
-        {/* Import CSS for nprogress */}
-        <link rel="stylesheet" type="text/css" href="/nprogress.css" />
-      </Head>
-      <Component {...pageProps} />
-    </>
+    <Provider store={store}>
+      <PersistGate persistor={persistor}> 
+      {/* fix SSR issue with PersistGate */}
+        {() => (
+          <>
+            <Head>
+              {/* Import CSS for nprogress */}
+              <link rel="stylesheet" type="text/css" href="/nprogress.css" />
+            </Head>
+            <Component {...pageProps} /> 
+          </>
+        )}
+      </PersistGate>
+    </Provider>
   );
 }
 
@@ -31,15 +44,13 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
     asPath,
   } = ctx;
 
-  const { token } = getAppCookies(req);
-  const user = token && verifyToken(token.replace('Bearer ', ''));
-
-  let pageProps = { user, asPath };
-  if (Component.getInitialProps) {
-    pageProps = await Component.getInitialProps({ ctx });
-  }
+  let pageProps = Component.getInitialProps ? await Component.getInitialProps({ ctx }) : { asPath };
 
   return { pageProps };
 };
 
-export default MyApp;
+
+const makeStore = () => store;
+const wrapper = createWrapper(makeStore)
+export default wrapper.withRedux(MyApp);
+

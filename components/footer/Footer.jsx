@@ -1,15 +1,33 @@
+import {
+  Container,
+  Divider,
+  Grid,
+  Header,
+  Image,
+  List,
+  Segment,
+} from 'semantic-ui-react'
+
 export default function Footer({ copyright = '2020' }) {
   return (
-    <footer className="footer-main text-center">
-      <div className="d-block">
-        <small>
-          All logos, trademarks and registered trademarks are the property of
-          their respective owners.
-          <a href="https://github.com/dyarfi/nextjs-sequelize">
-            Source Code @ {copyright}
-          </a>
-        </small>
-      </div>
-    </footer>
+    <Segment vertical style={{ margin: '5em 0em 0em', padding: '5em 0em' }}>
+      <Container textAlign='center'>
+        <Image centered size='mini' src='/sequelize.svg' />
+        <List horizontal divided link size='small'>
+          <List.Item as='a' href='#'>
+            Site Map
+          </List.Item>
+          <List.Item as='a' href='#'>
+            Contact Us
+          </List.Item>
+          <List.Item as='a' href='#'>
+            Terms and Conditions
+          </List.Item>
+          <List.Item as='a' href='#'>
+            Privacy Policy
+          </List.Item>
+        </List>
+      </Container>
+    </Segment>
   );
 }

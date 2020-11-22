@@ -13,7 +13,7 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head />
-        <body className="home">
+        <body className="home" style={{background: '#f0f4f7'}}>
           {/* <script src="noflash.js" /> */}
           <Main />
           <NextScript />

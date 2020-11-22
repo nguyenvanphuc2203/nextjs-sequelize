@@ -1,18 +1,18 @@
 'use strict';
 module.exports = {
   development: {
-    username: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
+    username: 'postgres',
+    password: 'admin1997',
+    database: 'nextjs',
     host: process.env.DB_HOST,
-    dialect: 'sqlite',
+    dialect: 'postgres',
   },
   test: {
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
-    dialect: 'mysql',
+    dialect: 'postgres',
     logging: false,
   },
   production: {

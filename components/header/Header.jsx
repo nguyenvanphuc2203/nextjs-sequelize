@@ -1,35 +1,93 @@
 import Link from 'next/link';
+import {
+  Container,
+  Dropdown,
+  Button,
+  Image,
+  Menu,
+  Icon,
+  Label
+} from 'semantic-ui-react'
+import Cookies from 'js-cookie';
+import { connect } from 'react-redux';
+import { useRouter } from 'next/router'
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutProfile } from '../../redux/actions/mainActions'
 
-/* Components */
-// import DarkModeToggle from "../DarkModeToggle";
+const HeaderComponent = ({ props }) => {
+  const { user } = props;
+  const profile = useSelector(state => state.profile);
+  const dispatch = useDispatch();
+  const router = useRouter()
 
-const Header = ({ props }) => {
+  const logout = () => {
+    dispatch(logoutProfile());
+    Cookies.remove('token');
+    router.push('/user/login')
+  }
+  console.log('profile',profile)
   return (
-    <>
-      <nav className="navbar navbar-expand-lg p-2">
-        <Link href="/">
-          <a className="nav-item nav-link">Home</a>
-        </Link>
-        {/* <Link href="/about">
-          <a className="nav-item nav-link">About</a>
-        </Link> */}
-        {/* <Link href="/forever">
-          <a className="nav-item nav-link">Forever</a>
-        </Link> */}
-        {/* <a href="/non-existing" className="nav-item nav-link">
-          Non Existing Page
-        </a> */}
-        {/* <span className="align-self-center ml-auto">
-          <DarkModeToggle />
-        </span> */}
-      </nav>
-      <style jsx>{`
-        a {
-          margin: 0 10px 0 0;
-        }
-      `}</style>
-    </>
+    <Menu fixed='top' inverted>
+      <Container>
+        <Menu.Item as='a' header>
+          <Image size='mini' src='https://react.semantic-ui.com/logo.png' style={{ marginRight: '1.5em' }} />
+          Project Name
+        </Menu.Item>
+        <Menu.Item as='a'><Link href="/">Home</Link></Menu.Item>
+
+        <Dropdown item simple text='Menu'>
+          <Dropdown.Menu>
+            <Dropdown.Item>List Item</Dropdown.Item>
+            <Dropdown.Item>List Item</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Header>Header Item</Dropdown.Header>
+            <Dropdown.Item>
+              <i className='dropdown icon' />
+              <span className='text'>Submenu</span>
+              <Dropdown.Menu>
+                <Dropdown.Item>List Item</Dropdown.Item>
+                <Dropdown.Item>List Item</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown.Item>
+            <Dropdown.Item>List Item</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+        {profile ? (
+          <>
+            <Menu.Item as='a' position='right'><Link href="/account/coin">
+              <Button as='div' labelPosition='left' >
+                <Label as='a' basic>
+                  { profile.coin && profile.coin.toLocaleString()} XU
+                </Label>
+                <Button icon color="yellow">
+                  <Icon name='facebook f' />
+                </Button>
+              </Button>
+            </Link>
+            </Menu.Item>
+            <Dropdown text={<img src='https://react.semantic-ui.com/images/avatar/small/elliot.jpg' style={{ borderRadius: '50%' }} />} pointing className='link item'>
+              <Dropdown.Menu>
+                <Link href={{ pathname: '/account/profile' }}>
+                  <Dropdown.Item>Tải khoản </Dropdown.Item>
+                </Link>
+                <Dropdown.Divider />
+                <Dropdown.Item onClick={logout} >Đăng xuất</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </>
+        ) :
+          (
+            <Menu.Item position='right'>
+              <Link href={{ pathname: '/user/login' }}>
+                <Button color='teal'>
+                  <Icon name='user' /> Tham gia
+                </Button>
+              </Link>
+            </Menu.Item>
+          )}
+      </Container>
+    </Menu>
   );
 };
 
-export default Header;
+export default connect((state) => state)(HeaderComponent);

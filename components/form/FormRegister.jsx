@@ -1,3 +1,6 @@
+import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
+import Link from 'next/link';
+
 function FormRegister({ props }) {
   const {
     onSubmitHandler,
@@ -9,76 +12,71 @@ function FormRegister({ props }) {
   } = props;
 
   return (
-    <form
-      onSubmit={onSubmitHandler}
-      className="form-register card"
-      method="POST"
-    >
-      <div className="form-group">
-        <h2>Register</h2>
-        <hr />
+    <Grid textAlign='center' style={{ height: '40vh' }} verticalAlign='middle'>
+      <Grid.Column style={{ maxWidth: 450 }}>
+        <Header as='h2' color='teal' textAlign='center'>
+          <Image src='/sequelize.svg' /> Đăng ký tài khoản mới
+          </Header>
         {stateFormMessage.status === 'error' && (
-          <h4 className="warning text-center">{stateFormMessage.error}</h4>
+          <Message warning>
+            <Message.Header>{stateFormMessage.error}</Message.Header>
+          </Message>
         )}
-      </div>
-      <div className="form-group">
-        <label htmlFor="email">Username</label>
-        <input
-          onChange={onChangeHandler}
-          className="form-control"
-          type="text"
-          id="username"
-          name="username"
-          placeholder="Username"
-          readOnly={loading && true}
-          value={stateFormData.username.value}
-        />
-        {stateFormError.username && (
-          <span className="warning">{stateFormError.username.hint}</span>
-        )}
-      </div>
-      <div className="form-group">
-        <label htmlFor="email">Email</label>
-        <input
-          onChange={onChangeHandler}
-          className="form-control"
-          type="text"
-          id="email"
-          name="email"
-          placeholder="Email"
-          readOnly={loading && true}
-          defaultValue={stateFormData.email.value}
-        />
-        {stateFormError.email && (
-          <span className="warning">{stateFormError.email.hint}</span>
-        )}
-      </div>
-      <div className="form-group">
-        <label htmlFor="password">Password</label>
-        <input
-          onChange={onChangeHandler}
-          className="form-control"
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Password"
-          readOnly={loading && true}
-          defaultValue={stateFormData.password.value}
-        />
-        {stateFormError.password && (
-          <span className="warning">{stateFormError.password.hint}</span>
-        )}
-      </div>
-      <div>
-        <button
-          type="submit"
-          className="btn btn-block btn-warning"
-          disabled={loading}
-        >
-          {!loading ? 'Register' : 'Registering...'}
-        </button>
-      </div>
-    </form>
+        <Form size='large' onSubmit={onSubmitHandler}>
+          <Segment stacked>
+            <Form.Input
+              fluid
+              icon='user'
+              id="username"
+              name="username"
+              iconPosition='left'
+              placeholder='Username'
+              onChange={onChangeHandler}
+              readOnly={loading && true}
+              value={stateFormData.username.value}
+              error={!!stateFormError.username} />
+            <Form.Input
+              fluid
+              icon='mail'
+              id="email"
+              name="email"
+              iconPosition='left'
+              placeholder='E-mail address'
+              onChange={onChangeHandler}
+              readOnly={loading && true}
+              value={stateFormData.email.value}
+              error={!!stateFormError.email} />
+            <Form.Input
+              fluid
+              icon='lock'
+              iconPosition='left'
+              placeholder='Password'
+              type='password'
+              id="password"
+              name="password"
+              onChange={onChangeHandler}
+              readOnly={loading && true}
+              value={stateFormData.email.password}
+              error={!!stateFormError.email} />
+            <Button color='teal' fluid size='large'
+              type="submit"
+              loading={loading}>
+              Đăng ký
+            </Button>
+          </Segment>
+        </Form>
+        <Message>
+          Đã có tài khoản?
+          <Link
+            href={{
+              pathname: '/user/login',
+            }}
+          >
+            <a>&nbsp; Đăng nhập</a>
+          </Link>
+        </Message>
+      </Grid.Column>
+    </Grid>
   );
 }
 export default FormRegister;
