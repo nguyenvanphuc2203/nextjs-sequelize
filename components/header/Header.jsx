@@ -57,10 +57,10 @@ const HeaderComponent = ({ props }) => {
             <Menu.Item as='a' position='right'><Link href="/account/coin">
               <Button as='div' labelPosition='left' >
                 <Label as='a' basic>
-                  { profile.coin && profile.coin.toLocaleString()} XU
+                  { profile.coin && profile.coin.toLocaleString()}
                 </Label>
-                <Button icon color="yellow">
-                  <Icon name='facebook f' />
+                <Button icon color="green">
+                  <Icon name='money bill alternate' />
                 </Button>
               </Button>
             </Link>

@@ -44,7 +44,7 @@ MyApp.getInitialProps = async ({ Component, ctx }) => {
     asPath,
   } = ctx;
 
-  let pageProps = Component.getInitialProps ? await Component.getInitialProps({ ctx }) : { asPath };
+  let pageProps = Component.getInitialProps ? await Component.getInitialProps({ ctx }) : { asPath, store };
 
   return { pageProps };
 };

@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import Router from 'next/router';
+import { persistor, store } from '../redux/store';
 
 const SECRET_KEY = process.env.JWT_KEY;
 
@@ -53,7 +54,7 @@ export function absoluteUrl(req, setLocalhost) {
   };
 }
 
-export const authMiddlewareRole = ctx => {
+export const authMiddlewareRole = (ctx, role) => {
   const { token } = getAppCookies(ctx.req);
 
   if (ctx.req && !token) {
@@ -61,7 +62,8 @@ export const authMiddlewareRole = ctx => {
     ctx.res.end();
     return;
   }
-  
+
+
   if (!token) {
     Router.push("/user/login");
   }
