@@ -1,6 +1,6 @@
 #!/bin/sh
 
-npm install --save-dev sequelize-cli &
+npm install -g sequelize-cli &
 npx sequelize db:migrate &
 npx sequelize db:seed:all &
 
